@@ -23,6 +23,7 @@ body {
 #choices div {
   display: flex;
   align-items: center;
+  justify-content: center
 }
 
 #choices div, .menu-buttons button {

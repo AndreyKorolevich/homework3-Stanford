@@ -18,6 +18,10 @@ class App {
     const resultElement = document.querySelector('#results');
     this.results = new ResultsScreen(resultElement);
 
+    this._showFlashcard = this._showFlashcard.bind(this);
+
+    document.addEventListener('item-opened', this._showFlashcard);
+  }
     // Uncomment this pair of lines to see the "flashcard" screen:
     // this.menu.hide();
     // this.flashcards.show();
@@ -25,5 +29,10 @@ class App {
     // Uncomment this pair of lines to see the "results" screen:
     // this.menu.hide();
     // this.results.show();
+  
+
+  _showFlashcard () {
+    this.menu.hide();
+    this.flashcards.show();
   }
 }
