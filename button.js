@@ -12,13 +12,10 @@ class Buttons {
         this.containerElement.append(item);
     }
 
-
-
     _openItem(event) {
         const flashcards = this.words;
-        //const item = event.currentTarget;
+       // const item = event.currentTarget;
         //item.removeEventListener('click', this._openItem);
-        console.log(flashcards);
-        document.dispatchEvent(new CustomEvent('item-opened' , {detail: flashcards} ));
+        document.dispatchEvent(new CustomEvent('item-opened', {detail: flashcards} ));
     }
 }

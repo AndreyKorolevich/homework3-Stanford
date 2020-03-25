@@ -31,8 +31,8 @@ class App {
     // this.results.show();
   
 
-  _showFlashcard () {
+  _showFlashcard (event) {
     this.menu.hide();
-    this.flashcards.show();
+    this.flashcards.show(event.detail);
   }
 }

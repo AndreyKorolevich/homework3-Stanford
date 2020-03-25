@@ -8,14 +8,26 @@
 
 class Flashcard {
   constructor(containerElement, frontText, backText) {
+
+    this.originX = null;
+    this.originY = null;
+    this.offsetX = 0;
+    this.offsetY = 0;
+    this.cardStarted = false;
     this.containerElement = containerElement;
 
     this._flipCard = this._flipCard.bind(this);
+    this._onCardStart = this._onCardStart.bind(this);
+    this._onCardEnd = this._onCardEnd.bind(this);
+    this._onCardMove = this._onCardMove.bind(this);
 
     this.flashcardElement = this._createFlashcardDOM(frontText, backText);
     this.containerElement.append(this.flashcardElement);
 
     this.flashcardElement.addEventListener('pointerup', this._flipCard);
+    this.flashcardElement.addEventListener('pointerdown', this._onCardStart);
+    this.flashcardElement.addEventListener('pointerup', this._onCardEnd);
+    this.flashcardElement.addEventListener('pointermove', this._onCardMove);
   }
 
   // Creates the DOM object representing a flashcard with the given
@@ -44,7 +56,7 @@ class Flashcard {
     const definitionSide = document.createElement('div');
     definitionSide.classList.add('flashcard');
     definitionSide.classList.add('definition');
-    definitionSide.textContent= backText;
+    definitionSide.textContent = backText;
 
     cardContainer.appendChild(wordSide);
     cardContainer.appendChild(definitionSide);
@@ -53,5 +65,44 @@ class Flashcard {
 
   _flipCard(event) {
     this.flashcardElement.classList.toggle('show-word');
+  }
+
+  _onCardStart(event) {
+    this.originX = event.clientX;
+    this.originY = event.clientY;
+    this.cardStarted = true;
+    event.currentTarget.setPointerCapture(event.pointerId);
+    event.currentTarget.style.transition = 'transform 0s';
+  }
+
+  _onCardMove(event) {
+    if (!this.cardStarted) {
+      return;
+    }
+    event.preventDefault();
+    const deltaX = event.clientX - this.originX;
+    const deltaY = event.clientY - this.originY;
+    const translateX = this.offsetX + deltaX;
+    const translateY = this.offsetY + deltaY;
+    event.currentTarget.style.transform = 'translate(' +
+      translateX + 'px, ' + translateY + 'px)' + 'rotate(' + 0.2 * deltaX + 'deg)';
+    if (this.deltaX > 149 || this.deltaX < -149) {
+      document.body.classList.add('darkBackground');
+    } else {
+      document.body.classList.remove('darkBackground');
+    }
+  }
+
+
+  _onCardEnd(event) {
+    this.cardStarted = false;
+    this.offsetX += event.clientX - this.originX;
+    this.offsetY += event.clientY - this.originY;
+    if (this.offsetX < 149 && this.offsetX > -149) {
+      event.currentTarget.style.transition = 'transform 0.6s';
+      event.currentTarget.style.transform = '';
+      this.offsetX = 0;
+      this.offsetY = 0;
+    }
   }
 }
