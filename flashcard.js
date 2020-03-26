@@ -73,6 +73,7 @@ class Flashcard {
     this.cardStarted = true;
     event.currentTarget.setPointerCapture(event.pointerId);
     event.currentTarget.style.transition = 'transform 0s';
+    document.body.classList.remove('dark-background');
   }
 
   _onCardMove(event) {
@@ -86,10 +87,10 @@ class Flashcard {
     const translateY = this.offsetY + deltaY;
     event.currentTarget.style.transform = 'translate(' +
       translateX + 'px, ' + translateY + 'px)' + 'rotate(' + 0.2 * deltaX + 'deg)';
-    if (this.deltaX > 149 || this.deltaX < -149) {
-      document.body.classList.add('darkBackground');
+    if (deltaX > 149 || deltaX < -149) {
+      document.body.classList.add('dark-background');
     } else {
-      document.body.classList.remove('darkBackground');
+      document.body.classList.remove('dark-background');
     }
   }
 
@@ -98,11 +99,14 @@ class Flashcard {
     this.cardStarted = false;
     this.offsetX += event.clientX - this.originX;
     this.offsetY += event.clientY - this.originY;
-    if (this.offsetX < 149 && this.offsetX > -149) {
+    if (this.offsetX > 149 || this.offsetX < -149) {
+      this.containerElement.textContent = '';
+      document.dispatchEvent(new CustomEvent('new-card'));
+    } else if (this.offsetX < 149 && this.offsetX > -149) {
       event.currentTarget.style.transition = 'transform 0.6s';
       event.currentTarget.style.transform = '';
       this.offsetX = 0;
       this.offsetY = 0;
-    }
+    }  
   }
 }

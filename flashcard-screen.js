@@ -10,20 +10,29 @@
 class FlashcardScreen {
   constructor(containerElement) {
     this.containerElement = containerElement;
+
+    this.show = this.show.bind(this);
+    this._showNewCard = this._showNewCard.bind(this);
+
+     document.addEventListener('new-card', this._showNewCard);
   }
 
   show(flashcards) {
-    this.flashcards = flashcards;
     this.containerElement.classList.remove('inactive');
-    const flashcardContainer = document.querySelector('#flashcard-container');
-    for (const key in flashcards) {
-    const card = new Flashcard(flashcardContainer, key, flashcards[key]);
-    //document.addEventListener('card-hide', this._???);
-    break;
-    }
+    this.cards = Object.entries(flashcards);
+
+    this._showNewCard();
+    console.log(this.cards);
   }
 
   hide() {
     this.containerElement.classList.add('inactive');
+  }
+
+  _showNewCard() {
+    const flashcardContainer = document.querySelector('#flashcard-container');
+    console.log(this.cards);
+    const card = new Flashcard(flashcardContainer, this.cards[0][0], this.cards[0][1]);
+    this.cards.shift(0);
   }
 }
