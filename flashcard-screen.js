@@ -22,7 +22,6 @@ class FlashcardScreen {
     this.cards = Object.entries(flashcards);
 
     this._showNewCard();
-    console.log(this.cards);
   }
 
   hide() {
@@ -31,7 +30,6 @@ class FlashcardScreen {
 
   _showNewCard() {
     const flashcardContainer = document.querySelector('#flashcard-container');
-    console.log(this.cards);
     const card = new Flashcard(flashcardContainer, this.cards[0][0], this.cards[0][1]);
     this.cards.shift(0);
   }

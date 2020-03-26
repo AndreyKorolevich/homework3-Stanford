@@ -15,6 +15,10 @@ class Flashcard {
     this.offsetY = 0;
     this.cardStarted = false;
     this.containerElement = containerElement;
+    this.rightAnswer = document.getElementById('number-correct');
+    this.wrongAnswer = document.getElementById('number-incorrect');
+    this.right = Number(this.rightAnswer.textContent);
+    this.wrong = Number(this.wrongAnswer.textContent);
 
     this._flipCard = this._flipCard.bind(this);
     this._onCardStart = this._onCardStart.bind(this);
@@ -23,6 +27,7 @@ class Flashcard {
 
     this.flashcardElement = this._createFlashcardDOM(frontText, backText);
     this.containerElement.append(this.flashcardElement);
+    document.body.classList.remove('dark-background');
 
     this.flashcardElement.addEventListener('pointerup', this._flipCard);
     this.flashcardElement.addEventListener('pointerdown', this._onCardStart);
@@ -73,7 +78,6 @@ class Flashcard {
     this.cardStarted = true;
     event.currentTarget.setPointerCapture(event.pointerId);
     event.currentTarget.style.transition = 'transform 0s';
-    document.body.classList.remove('dark-background');
   }
 
   _onCardMove(event) {
@@ -81,6 +85,8 @@ class Flashcard {
       return;
     }
     event.preventDefault();
+
+
     const deltaX = event.clientX - this.originX;
     const deltaY = event.clientY - this.originY;
     const translateX = this.offsetX + deltaX;
@@ -99,14 +105,21 @@ class Flashcard {
     this.cardStarted = false;
     this.offsetX += event.clientX - this.originX;
     this.offsetY += event.clientY - this.originY;
-    if (this.offsetX > 149 || this.offsetX < -149) {
+    if (this.offsetX > 149) {
+      this.right++;
+      this.rightAnswer.textContent = `${this.right}`;
       this.containerElement.textContent = '';
-      document.dispatchEvent(new CustomEvent('new-card'));
-    } else if (this.offsetX < 149 && this.offsetX > -149) {
+      document.dispatchEvent(new CustomEvent('new-card'));   
+    } else if (this.offsetX < -149) {
+      this.wrong++;
+      this.wrongAnswer.textContent = `${this.wrong}`;
+      this.containerElement.textContent = '';
+      document.dispatchEvent(new CustomEvent('new-card'));    
+    } else {
       event.currentTarget.style.transition = 'transform 0.6s';
       event.currentTarget.style.transform = '';
       this.offsetX = 0;
       this.offsetY = 0;
-    }  
+    }
   }
 }
