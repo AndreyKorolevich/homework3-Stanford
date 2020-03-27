@@ -11,9 +11,11 @@ class App {
 
     this._showFlashcard = this._showFlashcard.bind(this);
     this._showResults = this._showResults.bind(this);
+    this._showMenu = this._showMenu.bind(this);
 
     document.addEventListener('item-opened', this._showFlashcard); //custom event for create deck cards
     document.addEventListener('show-results', this._showResults);
+    document.addEventListener('open-menu', this._showMenu);
   }
 
   _showFlashcard (event) {
@@ -24,5 +26,10 @@ class App {
   _showResults() {
     this.flashcards.hide();
     this.results.show(event.detail);
+  }
+
+  _showMenu() {
+    this.results.hide();
+    this.menu.show();
   }
 }

@@ -1,6 +1,8 @@
 class ResultsScreen {
   constructor(containerElement) {
     this.containerElement = containerElement;
+    this.buttonMenu = document.querySelector('#results .to-menu');
+    this.buttonMenu.addEventListener('click', this._openMenu);
   }
 
   show(deck) {
@@ -19,5 +21,15 @@ class ResultsScreen {
 
   hide() {
     this.containerElement.classList.add('inactive');
+  }
+
+  _openMenu(){
+    this.wrongAnswers = 0;
+    this.rightAnswers = 0;
+    this.percent = 0;
+    document.querySelector('#results .percent').textContent = '';
+    document.querySelector('#results .correct').textContent = '';
+    document.querySelector('#results .incorrect').textContent = '';
+    document.dispatchEvent(new CustomEvent('open-menu'));
   }
 }

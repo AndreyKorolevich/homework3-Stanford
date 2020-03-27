@@ -6,16 +6,13 @@ class Buttons {
 
         this._openItem = this._openItem.bind(this);
 
-        const item = document.createElement('div');
-        item.textContent = this.title;
-        item.addEventListener('click', this._openItem);
-        this.containerElement.append(item);
+        this.item = document.createElement('div');
+        this.item.textContent = this.title;
+        this.item.addEventListener('click', this._openItem);
+        this.containerElement.append(this.item);
     }
 
     _openItem(event) {
-        const flashcards = this.words;
-       // const item = event.currentTarget;
-        //item.removeEventListener('click', this._openItem);
-        document.dispatchEvent(new CustomEvent('item-opened', {detail: flashcards} )); //custom event for create deck cards and broadcast corresponding object from constants
+        document.dispatchEvent(new CustomEvent('item-opened', {detail: this.words} )); //custom event for create deck cards and broadcast corresponding object from constants
     }
 }

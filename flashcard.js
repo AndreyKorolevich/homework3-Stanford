@@ -7,8 +7,8 @@ class Flashcard {
     this.offsetY = 0;
     this.cardStarted = false;
     this.containerElement = containerElement;
-    this.rightAnswer = document.getElementById('number-correct');
-    this.wrongAnswer = document.getElementById('number-incorrect');
+    this.rightAnswer = document.querySelector('#main .status .correct');
+    this.wrongAnswer = document.querySelector('#main .status .incorrect');
     this.right = Number(this.rightAnswer.textContent);
     this.wrong = Number(this.wrongAnswer.textContent);
     this.card = [frontText, backText];

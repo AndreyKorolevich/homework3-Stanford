@@ -25,6 +25,8 @@ class FlashcardScreen {
       this.deck.push(event.detail) // This is array contain first position object start object from constants.js file and wrong answers
     }
     if (this.cards.length === 0) {
+      document.querySelector('#main .status .correct').textContent = '0';
+      document.querySelector('#main .status .incorrect').textContent = '0';
       document.dispatchEvent(new CustomEvent('show-results', {detail: this.deck})); // custom event for create result test
       return;
     }
