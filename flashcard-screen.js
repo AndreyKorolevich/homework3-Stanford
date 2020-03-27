@@ -4,7 +4,6 @@ class FlashcardScreen {
     this.deck = [];
     this.show = this.show.bind(this);
     this._showNewCard = this._showNewCard.bind(this);
-    this._showWrongCard = this._showWrongCard.bind(this);
 
     document.addEventListener('new-card', this._showNewCard); // create new card when previous card swipe border 
   }
@@ -28,14 +27,11 @@ class FlashcardScreen {
       document.querySelector('#main .status .correct').textContent = '0';
       document.querySelector('#main .status .incorrect').textContent = '0';
       document.dispatchEvent(new CustomEvent('show-results', {detail: this.deck})); // custom event for create result test
+      this.deck = [];
       return;
     }
     const flashcardContainer = document.querySelector('#flashcard-container');
     new Flashcard(flashcardContainer, this.cards[0][0], this.cards[0][1]); // create first card from array 
     this.cards.shift(0); // delete first card from array
-  }
-
-  _showWrongCard(event) {
-    this.wrongCards.push(event.detail);
   }
 }

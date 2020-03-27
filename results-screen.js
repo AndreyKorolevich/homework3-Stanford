@@ -24,9 +24,6 @@ class ResultsScreen {
   }
 
   _openMenu(){
-    this.wrongAnswers = 0;
-    this.rightAnswers = 0;
-    this.percent = 0;
     document.querySelector('#results .percent').textContent = '';
     document.querySelector('#results .correct').textContent = '';
     document.querySelector('#results .incorrect').textContent = '';
