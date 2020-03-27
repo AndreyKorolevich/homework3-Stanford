@@ -1,12 +1,3 @@
-// TODO(you): Modify the class in whatever ways necessary to implement
-// the flashcard app behavior.
-//
-// You may need to do things such as:
-// - Changing the constructor parameters
-// - Changing the code in the constructor
-// - Adding methods
-// - Adding additional fields
-
 class App {
   constructor() {
     const menuElement = document.querySelector('#menu');
@@ -19,20 +10,19 @@ class App {
     this.results = new ResultsScreen(resultElement);
 
     this._showFlashcard = this._showFlashcard.bind(this);
+    this._showResults = this._showResults.bind(this);
 
-    document.addEventListener('item-opened', this._showFlashcard);
+    document.addEventListener('item-opened', this._showFlashcard); //custom event for create deck cards
+    document.addEventListener('show-results', this._showResults);
   }
-    // Uncomment this pair of lines to see the "flashcard" screen:
-    // this.menu.hide();
-    // this.flashcards.show();
-
-    // Uncomment this pair of lines to see the "results" screen:
-    // this.menu.hide();
-    // this.results.show();
-  
 
   _showFlashcard (event) {
     this.menu.hide();
-    this.flashcards.show(event.detail);
+    this.flashcards.show(event.detail); // event.detail is object with flashcards
+  }
+
+  _showResults() {
+    this.flashcards.hide();
+    this.results.show(event.detail);
   }
 }

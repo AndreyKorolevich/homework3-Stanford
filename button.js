@@ -16,6 +16,6 @@ class Buttons {
         const flashcards = this.words;
        // const item = event.currentTarget;
         //item.removeEventListener('click', this._openItem);
-        document.dispatchEvent(new CustomEvent('item-opened', {detail: flashcards} ));
+        document.dispatchEvent(new CustomEvent('item-opened', {detail: flashcards} )); //custom event for create deck cards and broadcast corresponding object from constants
     }
 }

@@ -1,25 +1,17 @@
-// TODO(you): Modify the class in whatever ways necessary to implement
-// the flashcard app behavior.
-//
-// You may need to do things such as:
-// - Changing the constructor parameters
-// - Rewriting some of the existing methods, such as changing code in `show()`
-// - Adding methods
-// - Adding additional fields
-
 class FlashcardScreen {
   constructor(containerElement) {
     this.containerElement = containerElement;
-
+    this.deck = [];
     this.show = this.show.bind(this);
     this._showNewCard = this._showNewCard.bind(this);
+    this._showWrongCard = this._showWrongCard.bind(this);
 
-     document.addEventListener('new-card', this._showNewCard);
+    document.addEventListener('new-card', this._showNewCard); // create new card when previous card swipe border 
   }
 
   show(flashcards) {
     this.containerElement.classList.remove('inactive');
-    this.cards = Object.entries(flashcards);
+    this.cards = Object.entries(flashcards); // conversions object to array
 
     this._showNewCard();
   }
@@ -29,8 +21,19 @@ class FlashcardScreen {
   }
 
   _showNewCard() {
+    if (event.detail != null) {
+      this.deck.push(event.detail) // This is array contain first position object start object from constants.js file and wrong answers
+    }
+    if (this.cards.length === 0) {
+      document.dispatchEvent(new CustomEvent('show-results', {detail: this.deck})); // custom event for create result test
+      return;
+    }
     const flashcardContainer = document.querySelector('#flashcard-container');
-    const card = new Flashcard(flashcardContainer, this.cards[0][0], this.cards[0][1]);
-    this.cards.shift(0);
+    new Flashcard(flashcardContainer, this.cards[0][0], this.cards[0][1]); // create first card from array 
+    this.cards.shift(0); // delete first card from array
+  }
+
+  _showWrongCard(event) {
+    this.wrongCards.push(event.detail);
   }
 }

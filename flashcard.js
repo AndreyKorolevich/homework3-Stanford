@@ -1,11 +1,3 @@
-// TODO(you): Modify the class in whatever ways necessary to implement
-// the flashcard app behavior.
-//
-// You may need to do things such as:
-// - Changing the constructor parameters
-// - Adding methods
-// - Adding additional fields
-
 class Flashcard {
   constructor(containerElement, frontText, backText) {
 
@@ -19,7 +11,8 @@ class Flashcard {
     this.wrongAnswer = document.getElementById('number-incorrect');
     this.right = Number(this.rightAnswer.textContent);
     this.wrong = Number(this.wrongAnswer.textContent);
-
+    this.card = [frontText, backText];
+    
     this._flipCard = this._flipCard.bind(this);
     this._onCardStart = this._onCardStart.bind(this);
     this._onCardEnd = this._onCardEnd.bind(this);
@@ -72,7 +65,7 @@ class Flashcard {
     this.flashcardElement.classList.toggle('show-word');
   }
 
-  _onCardStart(event) {
+  _onCardStart(event) { // initialization starts coordinates
     this.originX = event.clientX;
     this.originY = event.clientY;
     this.cardStarted = true;
@@ -80,19 +73,17 @@ class Flashcard {
     event.currentTarget.style.transition = 'transform 0s';
   }
 
-  _onCardMove(event) {
+  _onCardMove(event) { // transform card during drag and drop
     if (!this.cardStarted) {
       return;
     }
     event.preventDefault();
-
-
     const deltaX = event.clientX - this.originX;
     const deltaY = event.clientY - this.originY;
     const translateX = this.offsetX + deltaX;
     const translateY = this.offsetY + deltaY;
     event.currentTarget.style.transform = 'translate(' +
-      translateX + 'px, ' + translateY + 'px)' + 'rotate(' + 0.2 * deltaX + 'deg)';
+      translateX + 'px, ' + translateY + 'px)' + 'rotate(' + 0.2 * deltaX + 'deg)'; 
     if (deltaX > 149 || deltaX < -149) {
       document.body.classList.add('dark-background');
     } else {
@@ -105,16 +96,19 @@ class Flashcard {
     this.cardStarted = false;
     this.offsetX += event.clientX - this.originX;
     this.offsetY += event.clientY - this.originY;
+
     if (this.offsetX > 149) {
       this.right++;
       this.rightAnswer.textContent = `${this.right}`;
       this.containerElement.textContent = '';
-      document.dispatchEvent(new CustomEvent('new-card'));   
+      document.dispatchEvent(new CustomEvent('new-card')); // custom event for create new flashcard
     } else if (this.offsetX < -149) {
+      const wrongCard = this.card; 
       this.wrong++;
       this.wrongAnswer.textContent = `${this.wrong}`;
       this.containerElement.textContent = '';
-      document.dispatchEvent(new CustomEvent('new-card'));    
+      
+      document.dispatchEvent(new CustomEvent('new-card', {detail: wrongCard})); 
     } else {
       event.currentTarget.style.transition = 'transform 0.6s';
       event.currentTarget.style.transform = '';
