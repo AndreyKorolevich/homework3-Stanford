@@ -14,11 +14,13 @@ class App {
     this._showMenu = this._showMenu.bind(this);
 
     document.addEventListener('item-opened', this._showFlashcard); //custom event for create deck cards
+    document.addEventListener('restart-deck', this._showFlashcard);
     document.addEventListener('show-results', this._showResults);
     document.addEventListener('open-menu', this._showMenu);
   }
 
   _showFlashcard (event) {
+    this.results.hide();
     this.menu.hide();
     this.flashcards.show(event.detail); // event.detail is object with flashcards
   }
