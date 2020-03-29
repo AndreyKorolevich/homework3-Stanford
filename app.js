@@ -15,6 +15,7 @@ class App {
 
     document.addEventListener('item-opened', this._showFlashcard); //custom event for create deck cards
     document.addEventListener('restart-deck', this._showFlashcard);
+    document.addEventListener('continue-deck', this._showFlashcard);
     document.addEventListener('show-results', this._showResults);
     document.addEventListener('open-menu', this._showMenu);
   }
